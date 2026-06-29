@@ -1,0 +1,21 @@
+api/app/domain/services/runtime/checkpoint.py
+  s_eca1fb6bed43c8::t_aa35a1c2542150 1-60
+api/tests/domain/services/runtime/test_checkpoint.py
+  s_eca1fb6bed43c8::t_a4ffe7b2d2c147 1-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "172684882b81b39ac0792b88d33a108a98b51c5c",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
