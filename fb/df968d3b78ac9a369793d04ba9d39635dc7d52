@@ -1,0 +1,23 @@
+api/app/domain/services/runtime/todo_store.py
+  s_eca1fb6bed43c8::t_c627008de9f625 1-42
+api/app/domain/models/todo.py
+  s_eca1fb6bed43c8::t_5381eabc821941 1-10
+api/tests/domain/services/runtime/test_todo_store.py
+  s_eca1fb6bed43c8::t_e9b56186a246d2 1-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "fbdf968d3b78ac9a369793d04ba9d39635dc7d52",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
