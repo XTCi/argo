@@ -1,0 +1,20 @@
+api/app/domain/services/tools/test_runner.py
+  s_eca1fb6bed43c8::t_624799e13c7035 83
+  s_eca1fb6bed43c8::t_4c66193cca0392 81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "be7e9a70ca82f510d7b1222b0c56486ed5a321d0",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
