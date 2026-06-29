@@ -1,0 +1,25 @@
+api/tests/domain/services/agents/test_base_agent.py
+  s_eca1fb6bed43c8::t_33031e09a05246 32
+  s_eca1fb6bed43c8::t_0969023eed87e3 115
+  s_eca1fb6bed43c8::t_9ea913d1a09f0e 173
+api/app/domain/services/agents/base.py
+  s_eca1fb6bed43c8::t_a3404c89602d64 151-153,159,172-175,179-184,186-187
+api/app/domain/services/agents/coding_agent.py
+  s_eca1fb6bed43c8::t_9dcb8fd44268c9 1,13,22-23,26,37-39,45-46,67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "d46c61ea03e015b61bc66e75f49453d723a4c73c",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
