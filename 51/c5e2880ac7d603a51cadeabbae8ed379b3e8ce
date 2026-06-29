@@ -1,0 +1,21 @@
+api/app/domain/services/tools/file_edit.py
+  s_eca1fb6bed43c8::t_c3ef3d7cc901d3 102,105-109,121
+api/app/domain/services/runtime/tool_executor.py
+  s_eca1fb6bed43c8::t_08b6014baa0de5 109,111-113,120-123,125-142,144-146
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "51c5e2880ac7d603a51cadeabbae8ed379b3e8ce",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
