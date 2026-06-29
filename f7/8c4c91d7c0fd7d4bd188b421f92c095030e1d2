@@ -1,0 +1,39 @@
+api/app/domain/services/tools/code_search.py
+  s_eca1fb6bed43c8::t_ebc9c5814ff451 28
+  s_eca1fb6bed43c8::t_ed92699b35f1dc 4
+api/app/domain/models/checkpoint.py
+  s_eca1fb6bed43c8::t_dbf75ef630f79d 2,13
+api/app/infrastructure/external/llm/openai_llm.py
+  s_eca1fb6bed43c8::t_5cfd89752d3cb2 80-87
+api/app/domain/services/tools/git.py
+  s_eca1fb6bed43c8::t_72980ef3cbdc49 3
+  s_eca1fb6bed43c8::t_b9fc0a8215f8b3 56
+api/app/domain/services/runtime/memory.py
+  s_eca1fb6bed43c8::t_5054fd09468a30 42
+  s_eca1fb6bed43c8::t_454a9ae14e133f 32
+api/app/domain/services/tools/file_edit.py
+  s_eca1fb6bed43c8::t_41f6cfd06d8a0a 3
+  s_eca1fb6bed43c8::t_30f4c1f85cf130 23
+api/app/domain/models/memory.py
+  s_eca1fb6bed43c8::t_f6a0ed30ce6ae0 3
+  s_eca1fb6bed43c8::t_00ccc530237ad3 67
+  s_eca1fb6bed43c8::t_48e2d6a895c25f 76
+api/app/domain/services/agent_task_runner.py
+  s_eca1fb6bed43c8::t_0db74a6ea6c8ae 100-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "f78c4c91d7c0fd7d4bd188b421f92c095030e1d2",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
