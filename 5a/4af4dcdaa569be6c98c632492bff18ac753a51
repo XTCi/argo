@@ -1,0 +1,26 @@
+api/app/domain/services/agents/coding_agent.py
+  s_eca1fb6bed43c8::t_3e328fa7607e70 39
+api/app/application/services/agent_service.py
+  s_eca1fb6bed43c8::t_4a3f839a4f1bbf 123-127
+api/app/domain/services/runtime/memory.py
+  s_eca1fb6bed43c8::t_9345c0bfc5d430 21-24
+api/app/domain/services/agent_task_runner.py
+  s_eca1fb6bed43c8::t_8765b4be9a78b8 70
+  s_eca1fb6bed43c8::t_3d7cf7fb8ac5be 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "5a4af4dcdaa569be6c98c632492bff18ac753a51",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
