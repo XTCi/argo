@@ -1,0 +1,21 @@
+api/tests/domain/services/runtime/test_context_engine.py
+  s_eca1fb6bed43c8::t_0defc286d37dc4 1-58
+api/app/domain/services/runtime/context_engine.py
+  s_eca1fb6bed43c8::t_ffc6f1075a0e9a 1-139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "92d1b08933865789ce0120794e37b639f634244b",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
