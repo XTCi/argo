@@ -1,0 +1,23 @@
+api/tests/domain/services/runtime/test_tool_executor_batch.py
+  s_eca1fb6bed43c8::t_ed3fcc16bae5a0 1-59
+api/app/domain/services/runtime/tool_executor.py
+  s_eca1fb6bed43c8::t_defd644d8f87b7 3
+  s_eca1fb6bed43c8::t_3ae0c143c83ce5 15
+  s_eca1fb6bed43c8::t_7ec8b3a991ebf9 105-145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "391523a91c198ee58d03bad6bfeabfb5db8ad16c",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
