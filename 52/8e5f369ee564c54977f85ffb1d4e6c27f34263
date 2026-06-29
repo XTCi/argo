@@ -1,0 +1,21 @@
+api/app/domain/services/runtime/turn.py
+  s_eca1fb6bed43c8::t_f5ca3579080340 1-40
+api/tests/domain/services/runtime/test_turn.py
+  s_eca1fb6bed43c8::t_083d9b98abc920 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "528e5f369ee564c54977f85ffb1d4e6c27f34263",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
