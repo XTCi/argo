@@ -1,0 +1,20 @@
+api/app/domain/services/runtime/turn.py
+  s_eca1fb6bed43c8::t_a28acf4cbe89e5 5-10
+  s_eca1fb6bed43c8::t_e921a720e7c66e 77-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "c7740e43deeff96636926fbd2d9631773e3091ac",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
