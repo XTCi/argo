@@ -1,0 +1,21 @@
+api/tests/domain/services/runtime/test_tool_executor.py
+  s_eca1fb6bed43c8::t_743955d580675f 1-35
+api/app/domain/services/runtime/tool_executor.py
+  s_eca1fb6bed43c8::t_a6e8a1c81e9f2e 1-103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "c038b2802d98496beb4ebe457b237bbaeaddabf5",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "unknown"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
