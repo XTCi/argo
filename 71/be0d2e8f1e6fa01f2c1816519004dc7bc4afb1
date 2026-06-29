@@ -1,0 +1,24 @@
+api/app/domain/services/runtime/memory.py
+  s_eca1fb6bed43c8::t_4ad8e7994adada 1-58
+api/app/domain/models/memory.py
+  s_eca1fb6bed43c8::t_aa50b41d2f2920 2-3
+  s_eca1fb6bed43c8::t_9427c6c5bf6d2a 59-76
+api/tests/domain/services/runtime/test_memory.py
+  s_eca1fb6bed43c8::t_6d1bff6cedc2b7 1-64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "71be0d2e8f1e6fa01f2c1816519004dc7bc4afb1",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
