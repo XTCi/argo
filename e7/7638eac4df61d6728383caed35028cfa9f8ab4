@@ -1,0 +1,32 @@
+api/app/domain/repositories/uow.py
+  s_eca1fb6bed43c8::t_0bfbecccfa5a17 1,7,16
+api/app/domain/models/checkpoint.py
+  s_eca1fb6bed43c8::t_a1a8154546772c 1-13
+api/app/infrastructure/repositories/db_checkpoint_repository.py
+  s_eca1fb6bed43c8::t_b1629f20b6260e 1-61
+api/app/domain/repositories/checkpoint_repository.py
+  s_eca1fb6bed43c8::t_3c2a51101eaa15 1-21
+api/alembic/versions/a1b2c3d4e5f6_add_checkpoint_table.py
+  s_eca1fb6bed43c8::t_13604015cec1ac 1-35
+api/app/infrastructure/repositories/db_uow.py
+  s_eca1fb6bed43c8::t_cc5e55000f2e24 1,11
+  s_eca1fb6bed43c8::t_f018b7e5e87421 40
+api/app/infrastructure/models/checkpoint.py
+  s_eca1fb6bed43c8::t_92ec423ccc01d1 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "e77638eac4df61d6728383caed35028cfa9f8ab4",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
