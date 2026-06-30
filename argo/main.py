@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import os
 import sys
 from datetime import datetime
@@ -146,3 +147,6 @@ async def main() -> None:
 
     finally:
         _write(_SHOW_CUR + _EXIT_ALT)
+
+def sync_main() -> None:
+    asyncio.run(main())

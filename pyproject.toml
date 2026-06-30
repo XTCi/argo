@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argo-agent"
+version = "0.1.0"
+description = "Terminal AI coding agent"
+requires-python = ">=3.12"
+dependencies = [
+    "prompt_toolkit>=3.0",
+]
+
+[project.scripts]
+argo = "argo.main:sync_main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["argo*"]
