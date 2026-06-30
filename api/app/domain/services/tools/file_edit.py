@@ -11,10 +11,6 @@ from .base import BaseTool, tool
 # Private fuzzy-matching helpers
 # ---------------------------------------------------------------------------
 
-def _lines_stripped(text: str) -> str:
-    return "\n".join(line.strip() for line in text.splitlines())
-
-
 def _ws_norm(text: str) -> str:
     return _re.sub(r"[ \t]+", " ", text)
 
@@ -35,62 +31,62 @@ def _find_all(content: str, pattern: str) -> list[tuple[int, int]]:
     return results
 
 
+def _apply_via_lines(
+    content: str, old_str: str, new_str: str, norm_fn
+) -> str | None:
+    """Find old_str block in content using norm_fn for line comparison; replace in original."""
+    old_lines = old_str.splitlines()
+    if not old_lines:
+        return None
+    norm_old = [norm_fn(l) for l in old_lines]
+    content_lines = content.splitlines(keepends=True)
+    for i in range(len(content_lines) - len(old_lines) + 1):
+        window = content_lines[i : i + len(old_lines)]
+        if all(norm_fn(w.rstrip("\r\n")) == norm_old[j] for j, w in enumerate(window)):
+            before = "".join(content_lines[:i])
+            after = "".join(content_lines[i + len(old_lines) :])
+            # Preserve trailing newline of matched block when new_str omits it
+            last_line_ending = ""
+            last_win_line = window[-1]
+            if last_win_line.endswith("\n") and not new_str.endswith("\n"):
+                last_line_ending = "\n"
+            return before + new_str + last_line_ending + after
+    return None
+
+
 def _fuzzy_find_and_replace(content: str, old_str: str, new_str: str) -> tuple[str, str | None]:
     """Try 4 matching strategies in order. Return (new_content, error_or_None)."""
+    # Strategy 1: exact (offset-based is safe here — no normalisation)
+    matches = _find_all(content, old_str)
+    if len(matches) == 1:
+        s, e = matches[0]
+        return content[:s] + new_str + content[e:], None
+    if len(matches) > 1:
+        return content, (
+            f"patch_file failed: old_str appears {len(matches)} times — "
+            "add more surrounding context to make it unique."
+        )
 
-    strategies = [
-        ("exact",           lambda c, o: _find_all(c, o)),
-        ("line_trim",       lambda c, o: _find_all(_lines_stripped(c), _lines_stripped(o))),
-        ("whitespace_norm", lambda c, o: _find_all(_ws_norm(c), _ws_norm(o))),
-        ("escape_norm",     lambda c, o: _find_all(c, _escape_norm(o))),
-    ]
+    # Strategy 2: line_trim — strip each line before comparing
+    result = _apply_via_lines(content, old_str, new_str, lambda l: l.strip())
+    if result is not None:
+        return result, None
 
-    for strategy_name, find_fn in strategies:
-        if strategy_name == "exact":
-            matches = find_fn(content, old_str)
-            if len(matches) == 1:
-                start, end = matches[0]
-                return content[:start] + new_str + content[end:], None
-            if len(matches) > 1:
-                return content, (
-                    f"patch_file failed: old_str appears {len(matches)} times — "
-                    "add more surrounding context to make it unique."
-                )
-        else:
-            norm_content = (
-                _ws_norm(content) if strategy_name == "whitespace_norm" else
-                _lines_stripped(content) if strategy_name == "line_trim" else
-                content
-            )
-            norm_old = (
-                _ws_norm(old_str) if strategy_name == "whitespace_norm" else
-                _lines_stripped(old_str) if strategy_name == "line_trim" else
-                _escape_norm(old_str)
-            )
-            matches = _find_all(norm_content, norm_old)
-            if len(matches) == 1:
-                start, end = matches[0]
-                # Recover position in original content via first line of old_str
-                first_line = old_str.splitlines()[0].strip()
-                for i, line in enumerate(content.splitlines()):
-                    if first_line in line.strip():
-                        line_start = sum(len(l) + 1 for l in content.splitlines()[:i])
-                        block_end = line_start + len(
-                            "\n".join(content.splitlines()[i: i + len(old_str.splitlines())])
-                        )
-                        return content[:line_start] + new_str + content[block_end:], None
-                # Fallback: splice using normalised offsets
-                return content[:start] + new_str + norm_content[end:], None
-            if len(matches) > 1:
-                return content, (
-                    f"patch_file failed: old_str appears {len(matches)} times — "
-                    "add more surrounding context to make it unique."
-                )
+    # Strategy 3: whitespace_norm — collapse internal whitespace runs
+    result = _apply_via_lines(content, old_str, new_str, _ws_norm)
+    if result is not None:
+        return result, None
+
+    # Strategy 4: escape_norm — convert literal \n and \t
+    norm_old = _escape_norm(old_str)
+    matches = _find_all(content, norm_old)
+    if len(matches) == 1:
+        s, e = matches[0]
+        return content[:s] + new_str + content[e:], None
 
     # All strategies failed — return difflib hint
     first_line = old_str.splitlines()[0] if old_str.splitlines() else old_str
-    all_lines = content.splitlines()
-    close = difflib.get_close_matches(first_line, all_lines, n=3, cutoff=0.4)
+    close = difflib.get_close_matches(first_line, content.splitlines(), n=3, cutoff=0.4)
     hint = ""
     if close:
         hint = "\n\nClosest lines in file:\n" + "\n".join(f"  {l}" for l in close)

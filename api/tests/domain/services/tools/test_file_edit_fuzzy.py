@@ -70,3 +70,17 @@ async def test_file_unchanged_on_zero_match(tmp_file):
     await tool.invoke("patch_file", filepath=tmp_file,
                       old_str="DOES_NOT_EXIST", new_str="x")
     assert Path(tmp_file).read_text() == original
+
+
+@pytest.mark.asyncio
+async def test_whitespace_norm_multiline_file(tmp_path):
+    """Regression: splice corruption when pre-match lines have extra whitespace."""
+    f = tmp_path / "f.py"
+    f.write_text("a  =  0\nx  =  1\n")
+    tool = FileEditTool()
+    result = await tool.invoke("patch_file", filepath=str(f),
+                               old_str="x = 1", new_str="x = 2")
+    assert result.success
+    content = f.read_text()
+    assert content == "a  =  0\nx = 2\n"
+    assert "a  =  0" in content  # pre-match line must be intact
