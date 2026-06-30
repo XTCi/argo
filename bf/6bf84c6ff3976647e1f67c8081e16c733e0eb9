@@ -1,0 +1,21 @@
+argo/tests/test_session.py
+  s_eca1fb6bed43c8::t_eac0128c5b6242 34-35,42-44
+argo/session.py
+  s_eca1fb6bed43c8::t_705ee9b6492c81 60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "bf6bf84c6ff3976647e1f67c8081e16c733e0eb9",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
