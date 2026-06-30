@@ -1,0 +1,37 @@
+api/app/application/services/file_service.py
+  s_eca1fb6bed43c8::t_8562f255a38bfe 1-38
+api/app/domain/services/tools/base.py
+  s_eca1fb6bed43c8::t_4c94ee9e753cd5 1-109
+api/app/infrastructure/external/sandbox/docker_sandbox.py
+  s_eca1fb6bed43c8::t_319b7a8e366057 1-480
+api/app/infrastructure/logging/logging.py
+  s_eca1fb6bed43c8::t_63dd4090579f39 1-36
+api/app/interfaces/endpoints/app_config_routes.py
+  s_eca1fb6bed43c8::t_e30eb79e977e2d 1-203
+api/app/interfaces/endpoints/session_routes.py
+  s_eca1fb6bed43c8::t_513a3de666f527 1-353
+api/app/interfaces/errors/exception_handlers.py
+  s_eca1fb6bed43c8::t_a4bb5525da08ff 1-53
+api/app/main.py
+  s_eca1fb6bed43c8::t_f16d70d36231e2 1-97
+api/core/config.py
+  s_eca1fb6bed43c8::t_760b07e174e810 1-55
+argo/tests/test_config.py
+  s_eca1fb6bed43c8::t_3020f23ef5e44a 1-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "b1c72f069a79b9b3a94da4dfc90c6c44a4450be8",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
