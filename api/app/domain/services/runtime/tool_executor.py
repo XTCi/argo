@@ -12,7 +12,7 @@ from app.domain.services.tools.base import BaseTool
 logger = logging.getLogger(__name__)
 
 _FILE_MUTATION_TOOLS = frozenset({"write_file", "patch_file"})
-_TERMINAL_TOOLS = frozenset({"shell_execute", "shell_read_output", "shell_wait_process", "run_tests"})
+_TERMINAL_TOOLS = frozenset({"shell_execute", "shell_background", "read_output", "run_tests"})
 _SEARCH_TOOLS = frozenset({"grep_files", "find_symbol", "list_dir", "code_search"})
 
 # 工具输出超过此 token 估算则触发截断（1 token ≈ 4 chars）

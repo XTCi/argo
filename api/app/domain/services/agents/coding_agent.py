@@ -16,6 +16,7 @@ from app.domain.services.runtime.tool_executor import ToolExecutor
 from app.domain.services.runtime.checkpoint import CheckpointService
 from app.domain.services.runtime.workspace import WorkspaceContext
 from app.domain.services.tools.shell import ShellTool
+from app.domain.services.tools.shell_session import PersistentShellSession
 from app.domain.services.tools.file_edit import FileEditTool
 from app.domain.services.tools.code_search import CodeSearchTool
 from app.domain.services.tools.git import GitTool
@@ -31,14 +32,19 @@ def build_coding_agent(
     uow_factory: Callable[[], IUnitOfWork],
     session_id: str,
     workspace: WorkspaceContext,
+    shell_session: PersistentShellSession | None = None,
+    pre_execute_hook=None,
 ) -> BaseAgent:
     """工厂函数：组装完整的 CodingAgent（所有 runtime 组件连线）。"""
     cwd = workspace.cwd
 
     todo_store = TodoStore()
 
+    # Use provided session or create a temporary one (for backwards compat / tests)
+    _session = shell_session or PersistentShellSession(cwd=cwd)
+
     tools = [
-        ShellTool(cwd=cwd),
+        ShellTool(session=_session, cwd=cwd),
         FileEditTool(),
         CodeSearchTool(cwd=cwd),
         GitTool(cwd=cwd),
