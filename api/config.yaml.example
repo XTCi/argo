@@ -35,3 +35,24 @@ mcp_config:
 
 a2a_config:
   a2a_servers: []
+
+permissions:
+  mode: ask          # ask | yolo | strict
+  deny:
+    - "rm -rf /"
+    - ":(){:|:&};:"
+  ask:
+    - "rm "
+    - "sudo "
+    - "git push"
+    - "pip install"
+    - "npm install"
+    - "DROP "
+  allow:
+    - "git status"
+    - "git log"
+    - "git diff"
+    - "ls"
+    - "cat "
+    - "echo "
+    - "pwd"

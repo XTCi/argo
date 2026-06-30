@@ -85,12 +85,25 @@ class A2AConfig(BaseModel):
     a2a_servers: List[A2AServerConfig] = Field(default_factory=list)
 
 
+class PermissionsConfig(BaseModel):
+    """Permission gateway configuration."""
+    mode: str = "ask"          # ask | yolo | strict
+    deny: List[str] = Field(default_factory=lambda: ["rm -rf /", ":(){:|:&};:"])
+    ask: List[str] = Field(default_factory=lambda: [
+        "rm ", "sudo ", "git push", "pip install", "npm install", "DROP "
+    ])
+    allow: List[str] = Field(default_factory=lambda: [
+        "git status", "git log", "git diff", "ls", "cat ", "echo ", "pwd"
+    ])
+
+
 class AppConfig(BaseModel):
     """应用配置信息，包含Agent配置、LLM提供商配置、MCP配置、A2A配置"""
     llm_config: LLMConfig  # 语言模型配置
     agent_config: AgentConfig  # Agent通用配置
     mcp_config: MCPConfig  # MCP服务配置
     a2a_config: A2AConfig  # A2A服务配置
+    permissions: PermissionsConfig = Field(default_factory=PermissionsConfig)
 
     # Pydantic配置，允许传递额外的字段初始化
     model_config = ConfigDict(extra="allow")

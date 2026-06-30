@@ -12,7 +12,7 @@ _API_PATH = PROJECT_ROOT / "api"
 if str(_API_PATH) not in sys.path:
     sys.path.insert(0, str(_API_PATH))
 
-from app.domain.models.app_config import AppConfig, LLMConfig, AgentConfig  # noqa: E402
+from app.domain.models.app_config import AppConfig, LLMConfig, AgentConfig, PermissionsConfig  # noqa: E402
 
 
 def _config_path() -> Path:
@@ -31,7 +31,7 @@ def _config_path() -> Path:
     return p
 
 
-def load_config() -> tuple[LLMConfig, AgentConfig]:
+def load_config() -> tuple[LLMConfig, AgentConfig, PermissionsConfig]:
     raw = yaml.safe_load(_config_path().read_text())
     app_cfg = AppConfig(**raw)
-    return app_cfg.llm_config, app_cfg.agent_config
+    return app_cfg.llm_config, app_cfg.agent_config, app_cfg.permissions

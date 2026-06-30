@@ -9,9 +9,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 def test_load_config_returns_llm_and_agent_config():
     from argo.config import load_config
-    llm_cfg, agent_cfg = load_config()
+    llm_cfg, agent_cfg, permissions_cfg = load_config()
     assert llm_cfg.model_name == "deepseek-chat"
     assert agent_cfg.max_iterations > 0
+    assert permissions_cfg.mode in ("ask", "yolo", "strict")
 
 
 def test_load_config_raises_on_missing_file(tmp_path, monkeypatch):
