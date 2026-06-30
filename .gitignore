@@ -26,3 +26,4 @@ node_modules/
 
 # Development tooling artifacts
 .superpowers/sdd/
+api/config.yaml
