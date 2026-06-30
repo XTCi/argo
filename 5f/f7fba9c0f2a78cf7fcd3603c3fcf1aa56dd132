@@ -1,0 +1,21 @@
+api/config.yaml.example
+  s_eca1fb6bed43c8::t_d8aa5e197babed 1-37
+.gitignore
+  s_eca1fb6bed43c8::t_6e121eb105c8ef 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "5ff7fba9c0f2a78cf7fcd3603c3fcf1aa56dd132",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
