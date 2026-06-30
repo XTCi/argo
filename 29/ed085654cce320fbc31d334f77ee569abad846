@@ -1,0 +1,21 @@
+api/tests/domain/services/tools/test_file_edit_fuzzy.py
+  s_eca1fb6bed43c8::t_714b6c9138eaad 1-72
+api/app/domain/services/tools/file_edit.py
+  s_eca1fb6bed43c8::t_a840cb11f968d9 2-3,10-104,158-160,209-211,214,219-221
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "29ed085654cce320fbc31d334f77ee569abad846",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
