@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-06-30-argo-execution-layer-design.md
+  s_eca1fb6bed43c8::t_5efc20e2c18a2b 1-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "f916158c97e9364efde0ad6996596bbee5d7f74f",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
