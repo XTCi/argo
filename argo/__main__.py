@@ -1,5 +1,7 @@
 import asyncio
+import sys
 from argo.main import main
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    yolo = "--yolo" in sys.argv
+    asyncio.run(main(yolo=yolo))

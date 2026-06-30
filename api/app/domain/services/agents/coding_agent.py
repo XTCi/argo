@@ -72,7 +72,11 @@ def build_coding_agent(
         guidance=CODING_AGENT_SYSTEM_PROMPT,
         todo_store=todo_store,
     )
-    tool_executor = ToolExecutor(tools=tools, context_engine=context_engine)
+    tool_executor = ToolExecutor(
+        tools=tools,
+        context_engine=context_engine,
+        pre_execute_hook=pre_execute_hook,
+    )
     checkpoint_service = CheckpointService(session_id=session_id, uow_factory=uow_factory)
 
     return BaseAgent(

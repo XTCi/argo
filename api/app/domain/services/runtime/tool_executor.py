@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from enum import Enum
-from typing import List, Tuple
+from typing import Awaitable, Callable, List, Optional, Tuple
 
 from app.domain.models.tool_result import ToolResult
 from app.domain.services.runtime.context_engine import ContextEngine
@@ -53,9 +53,15 @@ class ToolExecutor:
     - 所有结果：返回 (ToolResult, ToolResultKind) 二元组
     """
 
-    def __init__(self, tools: List[BaseTool], context_engine: ContextEngine) -> None:
+    def __init__(
+        self,
+        tools: List[BaseTool],
+        context_engine: ContextEngine,
+        pre_execute_hook: Optional[Callable[[str, dict], Awaitable[bool]]] = None,
+    ) -> None:
         self._tools = tools
         self._context_engine = context_engine
+        self._pre_execute_hook = pre_execute_hook
         self._turn_mutation_paths: set[str] = set()
 
     def reset_turn(self) -> None:
@@ -91,6 +97,13 @@ class ToolExecutor:
         self, tool_name: str, arguments: dict
     ) -> Tuple[ToolResult, ToolResultKind]:
         """执行工具并返回 (result, kind)。"""
+        if self._pre_execute_hook is not None:
+            allowed = await self._pre_execute_hook(tool_name, arguments)
+            if not allowed:
+                return (
+                    ToolResult(success=False, message=f"Permission denied for: {arguments.get('command', tool_name)}"),
+                    ToolResultKind.OTHER,
+                )
         tool = self._find_tool(tool_name)
         result = await tool.invoke(tool_name, **arguments)
         kind = classify_tool_result(tool_name, result)

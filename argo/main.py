@@ -100,10 +100,10 @@ async def _pick_session_tui(cwd: str, model: str) -> ArgoSession:
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
-async def main() -> None:
+async def main(yolo: bool = False) -> None:
     # Load config before entering alt screen so errors print normally
     try:
-        llm_cfg, agent_cfg = load_config()
+        llm_cfg, agent_cfg, perm_cfg = load_config()
     except FileNotFoundError as e:
         print(f"\n  argo error: {e}\n", file=sys.stderr)
         sys.exit(1)
@@ -113,8 +113,38 @@ async def main() -> None:
     # Enter full-screen TUI immediately — everything from here is inside alt screen
     _write(_ENTER_ALT + _CLEAR)
 
+    shell_session = None
     try:
         argo_session = await _pick_session_tui(cwd, llm_cfg.model_name)
+
+        # Create persistent shell session
+        from app.domain.services.tools.shell_session import PersistentShellSession
+        shell_session = PersistentShellSession(cwd=cwd)
+        await shell_session.start()
+
+        # Confirm function shown in TUI for permission asks
+        async def confirm_fn(command: str) -> str:
+            _write(
+                f"\n  {_OCHRE}⚠  argo wants to run:{_RESET}\n"
+                f"     {command}\n\n"
+                f"  {_SUBTLE}[y]{_RESET} allow once"
+                f"  {_SUBTLE}[!]{_RESET} always allow this session"
+                f"  {_SUBTLE}[n]{_RESET} deny\n"
+            )
+            picker = PromptSession()
+            with patch_stdout():
+                raw = await picker.prompt_async(
+                    ANSI(f"\x1b[38;2;130;160;100m  Choose\x1b[90m›\x1b[0m ")
+                )
+            return raw.strip().lower() or "n"
+
+        # Permission gateway
+        from argo.permissions import PermissionGateway
+        gateway = PermissionGateway(
+            config=perm_cfg,
+            yolo=yolo,
+            confirm_fn=confirm_fn,
+        )
 
         session_repo    = InMemorySessionRepo(initial_messages=list(argo_session.messages))
         checkpoint_repo = InMemoryCheckpointRepo()
@@ -132,6 +162,8 @@ async def main() -> None:
             uow_factory=uow_factory,
             session_id=argo_session.session_id,
             workspace=workspace,
+            shell_session=shell_session,
+            pre_execute_hook=gateway.check,
         )
 
         app = ArgoApp(
@@ -146,7 +178,9 @@ async def main() -> None:
         await app._repl()
 
     finally:
+        if shell_session is not None:
+            await shell_session.close()
         _write(_SHOW_CUR + _EXIT_ALT)
 
 def sync_main() -> None:
-    asyncio.run(main())
+    asyncio.run(main(yolo="--yolo" in sys.argv))
