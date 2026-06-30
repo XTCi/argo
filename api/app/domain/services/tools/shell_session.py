@@ -26,6 +26,8 @@ class PersistentShellSession:
         self._proc: Optional[asyncio.subprocess.Process] = None
         self._bg_buffers: dict[str, collections.deque] = {}
         self._bg_tasks: dict[str, asyncio.Task] = {}
+        self._bg_procs: dict[str, asyncio.subprocess.Process] = {}
+        self._run_lock = asyncio.Lock()
         atexit.register(self._sync_close)
 
     async def start(self) -> None:
@@ -43,35 +45,36 @@ class PersistentShellSession:
             await self.start()
 
     async def run(self, command: str, timeout: int = 30) -> tuple[str, int]:
-        await self._ensure_alive()
-        wrapped = f'{command}\necho "{_SENTINEL}:$?"\n'
-        self._proc.stdin.write(wrapped.encode())
-        await self._proc.stdin.drain()
+        async with self._run_lock:
+            await self._ensure_alive()
+            wrapped = f'{command}\necho "{_SENTINEL}:$?"\n'
+            self._proc.stdin.write(wrapped.encode())
+            await self._proc.stdin.drain()
 
-        lines: list[str] = []
-        exit_code = 0
-        try:
-            async with asyncio.timeout(timeout):
-                while True:
-                    raw = await self._proc.stdout.readline()
-                    if not raw:
-                        # EOF — process died before emitting sentinel
-                        await self._proc.wait()
-                        exit_code = self._proc.returncode or 1
-                        break
-                    line = raw.decode(errors="replace")
-                    if line.startswith(f"{_SENTINEL}:"):
-                        exit_code = int(line.split(":")[1].strip())
-                        break
-                    lines.append(line)
-        except asyncio.TimeoutError:
+            lines: list[str] = []
+            exit_code = 0
             try:
-                self._proc.kill()
-            except ProcessLookupError:
-                pass
-            return f"[timed out after {timeout}s]\n" + "".join(lines), 124
+                async with asyncio.timeout(timeout):
+                    while True:
+                        raw = await self._proc.stdout.readline()
+                        if not raw:
+                            # EOF — process died before emitting sentinel
+                            await self._proc.wait()
+                            exit_code = self._proc.returncode or 1
+                            break
+                        line = raw.decode(errors="replace")
+                        if line.startswith(f"{_SENTINEL}:"):
+                            exit_code = int(line.split(":")[1].strip())
+                            break
+                        lines.append(line)
+            except asyncio.TimeoutError:
+                try:
+                    self._proc.kill()
+                except ProcessLookupError:
+                    pass
+                return f"[timed out after {timeout}s]\n" + "".join(lines), 124
 
-        return "".join(lines), exit_code
+            return "".join(lines), exit_code
 
     async def run_background(self, command: str, process_id: str) -> None:
         buf: collections.deque[str] = collections.deque(maxlen=_RING_MAXLEN)
@@ -92,6 +95,7 @@ class PersistentShellSession:
                     break
                 buf.append(raw.decode(errors="replace"))
 
+        self._bg_procs[process_id] = proc
         task = asyncio.create_task(_drain())
         self._bg_tasks[process_id] = task
 
@@ -105,6 +109,13 @@ class PersistentShellSession:
     async def close(self) -> None:
         for task in self._bg_tasks.values():
             task.cancel()
+        if self._bg_tasks:
+            await asyncio.gather(*self._bg_tasks.values(), return_exceptions=True)
+        for proc in self._bg_procs.values():
+            try:
+                proc.terminate()
+            except ProcessLookupError:
+                pass
         if self._proc and self._proc.returncode is None:
             try:
                 self._proc.terminate()
@@ -116,6 +127,11 @@ class PersistentShellSession:
                     pass
 
     def _sync_close(self) -> None:
+        for proc in self._bg_procs.values():
+            try:
+                os.kill(proc.pid, signal.SIGTERM)
+            except ProcessLookupError:
+                pass
         if self._proc and self._proc.returncode is None:
             try:
                 os.kill(self._proc.pid, signal.SIGTERM)
