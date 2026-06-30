@@ -75,5 +75,8 @@ class PermissionGateway:
                 if pattern in command:
                     self._session_allowlist.add(pattern)
                     break
+            else:
+                # Fallthrough path — no explicit ask rule matched; allowlist the full command
+                self._session_allowlist.add(command)
             return True
         return response == "y"

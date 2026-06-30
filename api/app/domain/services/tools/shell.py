@@ -55,6 +55,6 @@ class ShellTool(BaseTool):
     )
     async def read_output(self, process_id: str, wait_seconds: float = 2.0) -> ToolResult:
         out = await self._session.read_output(process_id, wait_seconds=wait_seconds)
-        if out == "" and process_id not in self._session._bg_buffers:
+        if out == "" and not self._session.has_process(process_id):
             return ToolResult(success=False, message=f"Unknown process_id: {process_id}")
         return ToolResult(success=True, data=out)

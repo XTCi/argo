@@ -182,39 +182,23 @@ class FileEditTool(BaseTool):
         replacements: Optional[list] = None,
     ) -> ToolResult:
         try:
-            # Normalise to replacements list
             if replacements is None:
                 if old_str is None:
-                    return ToolResult(
-                        success=False,
-                        message="Provide either old_str/new_str or replacements",
-                    )
+                    return ToolResult(success=False, message="Provide either old_str/new_str or replacements")
                 replacements = [{"old_str": old_str, "new_str": new_str or ""}]
 
             content = Path(filepath).read_text(encoding="utf-8")
+            seen: set[str] = set()
 
-            # Validate ALL replacements before writing (fail-fast)
-            seen_old_strs: set[str] = set()
             for i, rep in enumerate(replacements, 1):
                 o = rep.get("old_str", "")
-                if o in seen_old_strs:
-                    return ToolResult(
-                        success=False,
-                        message=f"Replacement {i}: old_str is duplicated in replacements list",
-                    )
-                seen_old_strs.add(o)
-                _, err = _fuzzy_find_and_replace(content, o, rep.get("new_str", ""))
+                if o in seen:
+                    return ToolResult(success=False,
+                                      message=f"Replacement {i}: old_str is duplicated in replacements list")
+                seen.add(o)
+                content, err = _fuzzy_find_and_replace(content, o, rep.get("new_str", ""))
                 if err:
-                    return ToolResult(
-                        success=False,
-                        message=f"Replacement {i}: {err}",
-                    )
-
-            # Apply all replacements
-            for rep in replacements:
-                content, err = _fuzzy_find_and_replace(content, rep["old_str"], rep.get("new_str", ""))
-                if err:
-                    return ToolResult(success=False, message=err)
+                    return ToolResult(success=False, message=f"Replacement {i}: {err}")
 
             Path(filepath).write_text(content, encoding="utf-8")
             return ToolResult(success=True, data={"replacements_applied": len(replacements)})

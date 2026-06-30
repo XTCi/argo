@@ -76,3 +76,19 @@ async def test_non_shell_tools_always_allowed():
     gw = PermissionGateway(config=make_cfg(), yolo=False)
     result = await gw.check("read_file", {"filepath": "/etc/passwd"})
     assert result is True
+
+
+@pytest.mark.asyncio
+async def test_bang_on_fallthrough_adds_command_to_allowlist():
+    """[!] on a command that matched no ask pattern should allowlist the command itself."""
+    confirm = AsyncMock(return_value="!")
+    # Use mode="ask" with empty ask list so the fallthrough path is taken
+    cfg = make_cfg(ask=[], mode="ask")
+    gw = PermissionGateway(config=cfg, yolo=False, confirm_fn=confirm)
+    # First call: triggers fallthrough ask
+    await gw.check("shell_execute", {"command": "some_obscure_command"})
+    # Second call: should be allowed without calling confirm again
+    confirm.reset_mock()
+    result = await gw.check("shell_execute", {"command": "some_obscure_command"})
+    assert result is True
+    confirm.assert_not_called()

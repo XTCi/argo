@@ -6,11 +6,11 @@ import collections
 import logging
 import os
 import signal
+import uuid
 from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-_SENTINEL = "__ARGO_DONE__"
 _RING_MAXLEN = 10_000
 
 
@@ -23,6 +23,7 @@ class PersistentShellSession:
 
     def __init__(self, cwd: str) -> None:
         self._cwd = cwd
+        self._sentinel = f"__ARGO_DONE_{uuid.uuid4().hex}__"
         self._proc: Optional[asyncio.subprocess.Process] = None
         self._bg_buffers: dict[str, collections.deque] = {}
         self._bg_tasks: dict[str, asyncio.Task] = {}
@@ -47,7 +48,7 @@ class PersistentShellSession:
     async def run(self, command: str, timeout: int = 30) -> tuple[str, int]:
         async with self._run_lock:
             await self._ensure_alive()
-            wrapped = f'{command}\necho "{_SENTINEL}:$?"\n'
+            wrapped = f'{command}\necho "{self._sentinel}:$?"\n'
             self._proc.stdin.write(wrapped.encode())
             await self._proc.stdin.drain()
 
@@ -63,7 +64,7 @@ class PersistentShellSession:
                             exit_code = self._proc.returncode or 1
                             break
                         line = raw.decode(errors="replace")
-                        if line.startswith(f"{_SENTINEL}:"):
+                        if line.startswith(f"{self._sentinel}:"):
                             exit_code = int(line.split(":")[1].strip())
                             break
                         lines.append(line)
@@ -98,6 +99,9 @@ class PersistentShellSession:
         self._bg_procs[process_id] = proc
         task = asyncio.create_task(_drain())
         self._bg_tasks[process_id] = task
+
+    def has_process(self, process_id: str) -> bool:
+        return process_id in self._bg_buffers
 
     async def read_output(self, process_id: str, wait_seconds: float = 2.0) -> str:
         if process_id not in self._bg_buffers:
