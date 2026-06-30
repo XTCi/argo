@@ -1,0 +1,21 @@
+argo/app.py
+  s_eca1fb6bed43c8::t_8ea5294fc582ef 3,8,15,18-31,36-42,48,50-88,110-111,120,123,134,138,142,145-146,148-154,158,163,172,179
+argo/renderer.py
+  s_eca1fb6bed43c8::t_6252878d0cba23 10-22,43,49-50,52-53,57-59,61-69,71-74,77-78,81
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "1d495b446ba47d2d49ca48baba2492602012b51f",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
