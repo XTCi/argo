@@ -1,0 +1,20 @@
+docs/superpowers/specs/2026-06-30-argo-cli-tui-design.md
+  s_eca1fb6bed43c8::t_e8a25d54c7e0ef 1-71,73-204
+  s_eca1fb6bed43c8::t_05f51e7bcb0155 72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "aa35357413b4f3014e928a3b82a61f9b0bf06173",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
