@@ -1,0 +1,22 @@
+api/tests/domain/services/tools/test_file_edit_fuzzy.py
+  s_eca1fb6bed43c8::t_de87e83ad2ba53 73-86
+api/app/domain/services/tools/file_edit.py
+  s_eca1fb6bed43c8::t_e5d27de94a981e 45,48-53
+  s_eca1fb6bed43c8::t_7b6e1489d022a1 34-44,46-47,54-56,59-85,89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "510ad764aa39d5c570045d0251b34e54034d49bf",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
