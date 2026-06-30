@@ -1,0 +1,31 @@
+api/config.yaml.example
+  s_eca1fb6bed43c8::t_9e21d929458a29 38-58
+argo/config.py
+  s_eca1fb6bed43c8::t_7e66d203025f5d 15,34,37
+api/app/domain/models/app_config.py
+  s_eca1fb6bed43c8::t_734309ec6df371 88-99,106
+argo/tests/test_config.py
+  s_eca1fb6bed43c8::t_78b3b33d560747 12,15
+argo/permissions.py
+  s_eca1fb6bed43c8::t_2421b6312734fd 1-79
+argo/__init__.py
+  s_eca1fb6bed43c8::t_093ff1b5e838ab 1-10
+argo/tests/test_permissions.py
+  s_eca1fb6bed43c8::t_a9b5a9e74b5be2 1-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "aa3e484a1db23aeba15b14c38ccd3005e8befe59",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
