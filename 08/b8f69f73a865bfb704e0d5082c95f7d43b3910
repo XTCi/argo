@@ -1,0 +1,23 @@
+docs/superpowers/specs/2026-07-01-argo-intelligence-layer-design.md
+  s_eca1fb6bed43c8::t_bbf1d94e01bddf 28-32
+  s_eca1fb6bed43c8::t_fe87e004e3d2c1 1-27,33-55,57,59-83,85-93,101-105,107,109-110,112-452,454-461
+  s_eca1fb6bed43c8::t_3b4f3a79c5b931 84,94-100,106,108,111
+  s_eca1fb6bed43c8::t_150bfdeceec1d7 453
+  s_eca1fb6bed43c8::t_751a1609b5493d 56,58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "08b8f69f73a865bfb704e0d5082c95f7d43b3910",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
