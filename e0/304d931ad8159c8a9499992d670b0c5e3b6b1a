@@ -1,0 +1,30 @@
+api/app/domain/services/runtime/tool_executor.py
+  s_eca1fb6bed43c8::t_555a06db52d6cf 100-106
+  s_eca1fb6bed43c8::t_9a91e03d47506f 56-61,64
+  s_eca1fb6bed43c8::t_31f3293b510fc3 6
+api/app/domain/services/agents/coding_agent.py
+  s_eca1fb6bed43c8::t_33c11d3a2fafac 75-79
+argo/__main__.py
+  s_eca1fb6bed43c8::t_69596e78522480 2,6-7
+argo/main.py
+  s_eca1fb6bed43c8::t_6f97adc8942e27 103,106,120-148,165-166,186
+  s_eca1fb6bed43c8::t_e13ed321d7e165 116
+  s_eca1fb6bed43c8::t_c49449b3234011 181
+  s_eca1fb6bed43c8::t_76fffef3a1502d 182
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "e0304d931ad8159c8a9499992d670b0c5e3b6b1a",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
