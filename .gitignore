@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[oc]
+*.pyo
+build/
+dist/
+wheels/
+*.egg-info/
+.venv/
+.env
+.env.*
+!.env.example
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / UI (if re-added later)
+node_modules/
+.next/
+.turbo/
+
+# Argo runtime data
+.argo/
+
+# Development tooling artifacts
+.superpowers/sdd/
