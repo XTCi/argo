@@ -1,0 +1,19 @@
+docs/superpowers/plans/2026-06-30-argo-cli-tui.md
+  s_eca1fb6bed43c8::t_924d20b94b0f36 1-1217
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "45566560bce451c57f973ddbf54d11ba234f8af7",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
