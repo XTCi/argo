@@ -84,3 +84,17 @@ def test_truncate_output_folds_at_10_lines():
     result = _truncate_output(text, max_lines=10)
     assert result.count("\n") < 15
     assert "+10 more" in result
+
+
+def test_streamed_message_event_renders_none():
+    from argo.renderer import render_event
+    event = MessageEvent(role="assistant", message="hello world", streamed=True)
+    assert render_event(event) is None
+
+
+def test_non_streamed_message_event_renders_text():
+    from argo.renderer import render_event
+    event = MessageEvent(role="assistant", message="hello world", streamed=False)
+    result = render_event(event)
+    assert result is not None
+    assert "hello world" in result

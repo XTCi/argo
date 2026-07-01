@@ -51,6 +51,8 @@ class BaseAgent:
         memory: ThreeLayerMemory,
         uow_factory: Callable[[], IUnitOfWork],
         session_id: str,
+        stream_callback: Callable[[str], None] | None = None,   # NEW
+        stream_reset: Callable[[], None] | None = None,         # NEW
     ) -> None:
         self._llm = llm
         self._json_parser = json_parser
@@ -63,6 +65,8 @@ class BaseAgent:
         self._memory = memory
         self._uow_factory = uow_factory
         self._session_id = session_id
+        self._stream_callback = stream_callback   # NEW
+        self._stream_reset = stream_reset         # NEW
 
     def _get_tool_schemas(self) -> List[Dict[str, Any]]:
         schemas = []
@@ -118,15 +122,20 @@ class BaseAgent:
         self, messages: List[Dict[str, Any]], turn_ctx: "TurnContext"
     ) -> AsyncGenerator[BaseEvent, None]:
         """ReAct 循环：LLM 调用 → 工具执行 → 再次 LLM 调用，直到无工具调用或耗尽配额。"""
+        # Reset stream prefix flag at the start of each agent turn
+        if self._stream_reset is not None:
+            self._stream_reset()
+
         while True:
             if not turn_ctx.iteration_budget.consume():
                 yield ErrorEvent(error=f"Iteration limit reached ({self._agent_config.max_iterations})")
                 return
 
-            # LLM 调用
+            # LLM 调用 — pass stream callback for token-by-token output
             response = await self._llm.invoke(
                 messages=messages,
                 tools=self._get_tool_schemas(),
+                text_callback=self._stream_callback,   # NEW
             )
 
             # 追踪 token 用量（用于 should_compress 决策）
@@ -145,7 +154,14 @@ class BaseAgent:
             if not tool_calls:
                 # 无工具调用 → 最终回答
                 if content:
-                    yield MessageEvent(role="assistant", message=content)
+                    # If streaming was active, end the line and mark event as already displayed
+                    if self._stream_callback is not None:
+                        self._stream_callback("\n")
+                    yield MessageEvent(
+                        role="assistant",
+                        message=content,
+                        streamed=self._stream_callback is not None,   # NEW
+                    )
                 return
 
             # 处理工具调用（支持批量并发）

@@ -35,6 +35,8 @@ def build_coding_agent(
     shell_session: PersistentShellSession | None = None,
     pre_execute_hook=None,
     project_context: str = "",
+    stream_callback: Callable[[str], None] | None = None,   # NEW
+    stream_reset: Callable[[], None] | None = None,         # NEW
 ) -> BaseAgent:
     """工厂函数：组装完整的 CodingAgent（所有 runtime 组件连线）。"""
     cwd = workspace.cwd
@@ -95,4 +97,6 @@ def build_coding_agent(
         memory=memory,
         uow_factory=uow_factory,
         session_id=session_id,
+        stream_callback=stream_callback,   # NEW
+        stream_reset=stream_reset,         # NEW
     )

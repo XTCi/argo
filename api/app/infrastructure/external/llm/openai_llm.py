@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict, Any
+from typing import Callable, List, Dict, Any
 
 from openai import AsyncOpenAI
 
@@ -14,15 +14,11 @@ class OpenAILLM(LLM):
     """基于OpenAI SDK/兼容OpenAI格式的LLM调用类"""
 
     def __init__(self, llm_config: LLMConfig, **kwargs) -> None:
-        """构造函数，完成异步OpenAI客户端的创建和参数初始化"""
-        # 1.初始化异步客户端
         self._client = AsyncOpenAI(
             base_url=str(llm_config.base_url),
             api_key=llm_config.api_key,
             **kwargs,
         )
-
-        # 2.完成其他参数的存储
         self._model_name = llm_config.model_name
         self._temperature = llm_config.temperature
         self._max_tokens = llm_config.max_tokens
@@ -46,10 +42,16 @@ class OpenAILLM(LLM):
             tools: List[Dict[str, Any]] = None,
             response_format: Dict[str, Any] = None,
             tool_choice: str = None,
+            text_callback: Callable[[str], None] | None = None,
     ) -> Dict[str, Any]:
-        """使用异步OpenAI客户端发起块响应（该步骤可以切换成流式响应）"""
+        """调用LLM，text_callback 不为 None 时使用流式响应。"""
         try:
-            # 1.检测是否传递了工具列表
+            if text_callback is not None:
+                return await self._invoke_streaming(
+                    messages, tools, response_format, tool_choice, text_callback
+                )
+
+            # Non-streaming path (unchanged)
             if tools:
                 logger.info(f"调用OpenAI客户端向LLM发起请求并携带工具信息: {self._model_name}")
                 response = await self._client.chat.completions.create(
@@ -63,7 +65,6 @@ class OpenAILLM(LLM):
                     timeout=self._timeout,
                 )
             else:
-                # 2.为传递工具则删除tools/tool_choice等参数
                 logger.info(f"调用OpenAI客户端向LLM发起请求未携带: {self._model_name}")
                 response = await self._client.chat.completions.create(
                     model=self._model_name,
@@ -74,24 +75,84 @@ class OpenAILLM(LLM):
                     timeout=self._timeout,
                 )
 
-            # 3.处理响应数据并返回
             logger.info(f"OpenAI客户端返回内容: {response.model_dump()}")
             message_dict = response.choices[0].message.model_dump()
-            # Attach usage so ContextEngine.update_from_response() can fire
             if response.usage:
                 message_dict["usage"] = {
                     "prompt_tokens": response.usage.prompt_tokens,
                     "completion_tokens": response.usage.completion_tokens,
                 }
             return message_dict
+
         except Exception as e:
             logger.error(f"调用OpenAI客户端发生错误: {str(e)}")
             raise ServerRequestsError("调用OpenAI客户端向LLM发起请求出错")
 
+    async def _invoke_streaming(
+            self,
+            messages: List[Dict[str, Any]],
+            tools: List[Dict[str, Any]] | None,
+            response_format: Dict[str, Any] | None,
+            tool_choice: str | None,
+            text_callback: Callable[[str], None],
+    ) -> Dict[str, Any]:
+        """流式路径：每个文字 delta 立即调用 text_callback，工具调用 chunk 内部累积。"""
+        kwargs: Dict[str, Any] = dict(
+            model=self._model_name,
+            temperature=self._temperature,
+            max_tokens=self._max_tokens,
+            messages=messages,
+            stream=True,
+            timeout=self._timeout,
+        )
+        if tools:
+            kwargs["tools"] = tools
+        if tool_choice:
+            kwargs["tool_choice"] = tool_choice
+        if response_format:
+            kwargs["response_format"] = response_format
+
+        stream = await self._client.chat.completions.create(**kwargs)
+
+        full_content = ""
+        tool_calls_acc: dict[int, dict] = {}
+
+        async for chunk in stream:
+            if not chunk.choices:
+                continue
+            delta = chunk.choices[0].delta
+
+            if delta.content:
+                full_content += delta.content
+                text_callback(delta.content)
+
+            if delta.tool_calls:
+                for tc in delta.tool_calls:
+                    idx = tc.index
+                    if idx not in tool_calls_acc:
+                        tool_calls_acc[idx] = {
+                            "id": tc.id or "",
+                            "type": "function",
+                            "function": {"name": tc.function.name or "", "arguments": ""},
+                        }
+                    if tc.id:
+                        tool_calls_acc[idx]["id"] = tc.id
+                    if tc.function:
+                        if tc.function.name:
+                            tool_calls_acc[idx]["function"]["name"] += tc.function.name
+                        if tc.function.arguments:
+                            tool_calls_acc[idx]["function"]["arguments"] += tc.function.arguments
+
+        tool_calls = list(tool_calls_acc.values()) if tool_calls_acc else None
+        return {
+            "role": "assistant",
+            "content": full_content or None,
+            "tool_calls": tool_calls,
+        }
+
 
 if __name__ == "__main__":
     import asyncio
-
 
     async def main():
         llm = OpenAILLM(LLMConfig(
@@ -101,6 +162,5 @@ if __name__ == "__main__":
         ))
         response = await llm.invoke([{"role": "user", "content": "Hi"}])
         print(response)
-
 
     asyncio.run(main())

@@ -74,7 +74,8 @@ def render_event(event: BaseEvent) -> str | None:
             return line
 
     if isinstance(event, MessageEvent):
-        # Wrap assistant text with subtle teal tint
+        if event.streamed:
+            return None   # already written to stdout chunk-by-chunk
         return f"{TEAL}{event.message}{RESET}"
 
     if isinstance(event, ErrorEvent):

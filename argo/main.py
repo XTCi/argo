@@ -125,6 +125,19 @@ async def main(yolo: bool = False) -> None:
 
         project_context = await load_project_context(cwd)
 
+        # Streaming callback: write tokens to TUI as they arrive
+        _prefix_state = {"written": False}
+
+        def stream_cb(chunk: str) -> None:
+            if not _prefix_state["written"]:
+                _write(f"\n  {_TEAL}argo{_RESET}{_GRAY}›{_RESET} ")
+                _prefix_state["written"] = True
+            _write(chunk)
+            sys.stdout.flush()
+
+        def stream_reset_fn() -> None:
+            _prefix_state["written"] = False
+
         # Confirm function shown in TUI for permission asks
         async def confirm_fn(command: str) -> str:
             _write(
@@ -168,6 +181,8 @@ async def main(yolo: bool = False) -> None:
             shell_session=shell_session,
             pre_execute_hook=gateway.check,
             project_context=project_context,
+            stream_callback=stream_cb,      # NEW
+            stream_reset=stream_reset_fn,   # NEW
         )
 
         app = ArgoApp(

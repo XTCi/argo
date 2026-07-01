@@ -1,4 +1,4 @@
-from typing import Protocol, List, Dict, Any
+from typing import Callable, Protocol, List, Dict, Any
 
 
 class LLM(Protocol):
@@ -10,6 +10,7 @@ class LLM(Protocol):
             tools: List[Dict[str, Any]] = None,
             response_format: Dict[str, Any] = None,
             tool_choice: str = None,
+            text_callback: Callable[[str], None] | None = None,
     ) -> Dict[str, Any]:
         """传递消息列表、工具列表、响应格式、工具选择策略调用LLM接口"""
         ...

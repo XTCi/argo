@@ -64,6 +64,7 @@ class MessageEvent(BaseEvent):
     role: Literal["user", "assistant"] = "assistant"  # 消息角色
     message: str = ""  # 消息本身
     attachments: List[File] = Field(default_factory=list)  # 附件列表信息
+    streamed: bool = False  # True means text was already written to stdout via stream_callback
 
 
 class BrowserToolContent(BaseModel):
