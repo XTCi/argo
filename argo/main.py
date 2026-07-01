@@ -18,6 +18,7 @@ from argo.adapters.uow import InMemoryUoW
 from argo.app import ArgoApp, _write, _render_header, _render_input_hint, _prompt_str, _term_width
 
 from app.domain.services.runtime.workspace import resolve_workspace
+from app.domain.services.runtime.project_context import load_project_context
 from app.infrastructure.external.llm.openai_llm import OpenAILLM
 from app.infrastructure.external.json_parser.repair_json_parser import RepairJSONParser
 from app.domain.services.agents.coding_agent import build_coding_agent
@@ -122,6 +123,8 @@ async def main(yolo: bool = False) -> None:
         shell_session = PersistentShellSession(cwd=cwd)
         await shell_session.start()
 
+        project_context = await load_project_context(cwd)
+
         # Confirm function shown in TUI for permission asks
         async def confirm_fn(command: str) -> str:
             _write(
@@ -164,6 +167,7 @@ async def main(yolo: bool = False) -> None:
             workspace=workspace,
             shell_session=shell_session,
             pre_execute_hook=gateway.check,
+            project_context=project_context,
         )
 
         app = ArgoApp(

@@ -34,6 +34,7 @@ def build_coding_agent(
     workspace: WorkspaceContext,
     shell_session: PersistentShellSession | None = None,
     pre_execute_hook=None,
+    project_context: str = "",
 ) -> BaseAgent:
     """工厂函数：组装完整的 CodingAgent（所有 runtime 组件连线）。"""
     cwd = workspace.cwd
@@ -64,12 +65,15 @@ def build_coding_agent(
         protect_last_n=6,
     )
     memory = ThreeLayerMemory(session_id=session_id, uow_factory=uow_factory)
+
+    active_guidance = project_context + CODING_AGENT_SYSTEM_PROMPT
+
     turn_orchestrator = TurnOrchestrator(
         workspace=workspace,
         memory=memory,
         context_engine=context_engine,
         max_iterations=agent_config.max_iterations,
-        guidance=CODING_AGENT_SYSTEM_PROMPT,
+        guidance=active_guidance,
         todo_store=todo_store,
     )
     tool_executor = ToolExecutor(
