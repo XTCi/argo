@@ -144,3 +144,57 @@ def test_message_event_streamed_defaults_false():
 def test_message_event_streamed_field_can_be_set():
     event = MessageEvent(role="assistant", message="hello", streamed=True)
     assert event.streamed is True
+
+
+class _FakeUsage:
+    def __init__(self, prompt_tokens, completion_tokens):
+        self.prompt_tokens = prompt_tokens
+        self.completion_tokens = completion_tokens
+
+
+class _FakeUsageChunk:
+    """Final chunk from stream_options=include_usage — has usage, no choices."""
+    def __init__(self, prompt_tokens, completion_tokens):
+        self.choices = []
+        self.usage = _FakeUsage(prompt_tokens, completion_tokens)
+
+
+@pytest.mark.asyncio
+async def test_streaming_returns_usage_from_final_chunk():
+    llm = OpenAILLM(_cfg())
+
+    async def fake_stream():
+        yield _FakeChunk("hello")
+        yield _FakeUsageChunk(prompt_tokens=10, completion_tokens=5)
+
+    with patch.object(
+        llm._client.chat.completions, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.return_value = fake_stream()
+        result = await llm.invoke(
+            messages=[{"role": "user", "content": "hi"}],
+            text_callback=lambda x: None,
+        )
+
+    assert result["content"] == "hello"
+    assert "usage" in result
+    assert result["usage"]["prompt_tokens"] == 10
+    assert result["usage"]["completion_tokens"] == 5
+
+
+@pytest.mark.asyncio
+async def test_streaming_passes_stream_options_include_usage():
+    llm = OpenAILLM(_cfg())
+
+    async def fake_stream():
+        yield _FakeChunk("hi")
+
+    with patch.object(
+        llm._client.chat.completions, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.return_value = fake_stream()
+        await llm.invoke(
+            messages=[{"role": "user", "content": "x"}],
+            text_callback=lambda x: None,
+        )
+        assert mock_create.call_args.kwargs.get("stream_options") == {"include_usage": True}

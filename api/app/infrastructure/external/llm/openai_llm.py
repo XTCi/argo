@@ -103,6 +103,7 @@ class OpenAILLM(LLM):
             max_tokens=self._max_tokens,
             messages=messages,
             stream=True,
+            stream_options={"include_usage": True},
             timeout=self._timeout,
         )
         if tools:
@@ -116,9 +117,13 @@ class OpenAILLM(LLM):
 
         full_content = ""
         tool_calls_acc: dict[int, dict] = {}
+        usage_data = None
 
         async for chunk in stream:
             if not chunk.choices:
+                # Final usage-only chunk (no choices) — capture usage
+                if hasattr(chunk, "usage") and chunk.usage is not None:
+                    usage_data = chunk.usage
                 continue
             delta = chunk.choices[0].delta
 
@@ -144,11 +149,17 @@ class OpenAILLM(LLM):
                             tool_calls_acc[idx]["function"]["arguments"] += tc.function.arguments
 
         tool_calls = list(tool_calls_acc.values()) if tool_calls_acc else None
-        return {
+        result: Dict[str, Any] = {
             "role": "assistant",
             "content": full_content or None,
             "tool_calls": tool_calls,
         }
+        if usage_data is not None:
+            result["usage"] = {
+                "prompt_tokens": usage_data.prompt_tokens,
+                "completion_tokens": usage_data.completion_tokens,
+            }
+        return result
 
 
 if __name__ == "__main__":
