@@ -133,7 +133,7 @@ class OpenAILLM(LLM):
                         tool_calls_acc[idx] = {
                             "id": tc.id or "",
                             "type": "function",
-                            "function": {"name": tc.function.name or "", "arguments": ""},
+                            "function": {"name": "", "arguments": ""},
                         }
                     if tc.id:
                         tool_calls_acc[idx]["id"] = tc.id

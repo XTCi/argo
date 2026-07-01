@@ -95,6 +95,47 @@ async def test_no_callback_uses_non_streaming_path():
     assert result["content"] == "hi"
 
 
+class _FakeFunction:
+    def __init__(self, name=None, arguments=None):
+        self.name = name
+        self.arguments = arguments
+
+
+class _FakeToolCall:
+    def __init__(self, index, id=None, name=None, arguments=None):
+        self.index = index
+        self.id = id
+        self.function = _FakeFunction(name, arguments)
+
+
+@pytest.mark.asyncio
+async def test_streaming_tool_call_name_not_doubled():
+    """Tool call name must not be doubled when the first chunk sets the name."""
+    llm = OpenAILLM(_cfg())
+
+    async def fake_stream():
+        # First chunk: id + name arrive together
+        yield _FakeChunk(tool_calls=[_FakeToolCall(0, id="call_1", name="get_weather", arguments="")])
+        # Second chunk: arguments arrive
+        yield _FakeChunk(tool_calls=[_FakeToolCall(0, id=None, name=None, arguments='{"city": "Paris"}')])
+
+    with patch.object(
+        llm._client.chat.completions, "create", new_callable=AsyncMock
+    ) as mock_create:
+        mock_create.return_value = fake_stream()
+        result = await llm.invoke(
+            messages=[{"role": "user", "content": "weather?"}],
+            text_callback=lambda x: None,
+        )
+
+    assert result["tool_calls"] is not None
+    assert len(result["tool_calls"]) == 1
+    tc = result["tool_calls"][0]
+    assert tc["function"]["name"] == "get_weather"   # NOT "get_weatherget_weather"
+    assert tc["function"]["arguments"] == '{"city": "Paris"}'
+    assert tc["id"] == "call_1"
+
+
 def test_message_event_streamed_defaults_false():
     event = MessageEvent(role="assistant", message="hello")
     assert event.streamed is False
