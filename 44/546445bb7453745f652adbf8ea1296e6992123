@@ -1,0 +1,39 @@
+argo/main.py
+  s_eca1fb6bed43c8::t_a6f6582d307dd1 128-140
+  s_eca1fb6bed43c8::t_7be201f945d3d6 184-185
+api/app/domain/services/agents/coding_agent.py
+  s_eca1fb6bed43c8::t_8f7d940d29d2f9 100-101
+  s_eca1fb6bed43c8::t_6765f3e5385149 38-39
+api/app/infrastructure/external/llm/openai_llm.py
+  s_eca1fb6bed43c8::t_9ce9e6c9149e3c 2,45,47,49-54,86,91-151
+  s_eca1fb6bed43c8::t_048f6de381f440 152
+api/app/domain/services/agents/base.py
+  s_eca1fb6bed43c8::t_467b05671695d6 125-128,134,138,157-164
+  s_eca1fb6bed43c8::t_fefa34c901ca2c 54-55,68-69
+api/app/domain/models/event.py
+  s_eca1fb6bed43c8::t_31172748375776 67
+argo/tests/test_renderer.py
+  s_eca1fb6bed43c8::t_1696e639d2a112 87-100
+argo/renderer.py
+  s_eca1fb6bed43c8::t_3edc1e0a6259ab 77-78
+api/tests/domain/services/runtime/test_llm_streaming.py
+  s_eca1fb6bed43c8::t_db5425ff3b7ff6 1-105
+api/app/domain/external/llm.py
+  s_eca1fb6bed43c8::t_8a191aeb84bcc7 1,13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "44546445bb7453745f652adbf8ea1296e6992123",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
