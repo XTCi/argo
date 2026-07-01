@@ -1,0 +1,33 @@
+argo/adapters/uow.py
+  s_eca1fb6bed43c8::t_dce2e8dda66856 6
+api/config.yaml.local
+  s_eca1fb6bed43c8::t_6e121eb105c8ef 1-2,4-34
+  s_eca1fb6bed43c8::t_f5486a81c630ef 3
+api/app/domain/models/event.py
+  s_eca1fb6bed43c8::t_37680f0aaff2d0 4,12-13,17-19,24-26,31-36,41,49
+argo/main.py
+  s_eca1fb6bed43c8::t_d08f61cfc43a33 167
+  s_eca1fb6bed43c8::t_1a10b48626c189 16
+api/app/domain/repositories/uow.py
+  s_eca1fb6bed43c8::t_a7428a60bfaf36 3,11,15,18,21,24
+api/app/infrastructure/external/llm/openai_llm.py
+  s_eca1fb6bed43c8::t_34030ad312722b 88
+docs/superpowers/plans/2026-06-30-argo-execution-layer.md
+  s_eca1fb6bed43c8::t_1b7c38caa5dc5d 1-1270
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "a81c8d4a9a163270edc21e70372dae593d8a5f02",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
