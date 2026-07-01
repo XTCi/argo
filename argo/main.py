@@ -13,7 +13,7 @@ import argo.config  # noqa: F401 — ensures api/ on sys.path
 
 from argo.config import load_config
 from argo.session import ArgoSession, new_session, save_session, list_sessions
-from argo.adapters.repos import InMemorySessionRepo, InMemoryCheckpointRepo, NoopFileRepo
+from argo.adapters.repos import InMemorySessionRepo, InMemoryCheckpointRepo
 from argo.adapters.uow import InMemoryUoW
 from argo.app import ArgoApp, _write, _render_header, _render_input_hint, _prompt_str, _term_width
 
@@ -164,8 +164,7 @@ async def main(yolo: bool = False) -> None:
 
         session_repo    = InMemorySessionRepo(initial_messages=list(argo_session.messages))
         checkpoint_repo = InMemoryCheckpointRepo()
-        file_repo       = NoopFileRepo()
-        uow_factory     = lambda: InMemoryUoW(session_repo, checkpoint_repo, file_repo)
+        uow_factory     = lambda: InMemoryUoW(session_repo, checkpoint_repo)
 
         llm         = OpenAILLM(llm_cfg)
         json_parser = RepairJSONParser()

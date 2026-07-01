@@ -3,7 +3,6 @@ from typing import Callable, List, Dict, Any
 
 from openai import AsyncOpenAI
 
-from app.application.errors.exceptions import ServerRequestsError
 from app.domain.external.llm import LLM
 from app.domain.models.app_config import LLMConfig
 
@@ -86,7 +85,7 @@ class OpenAILLM(LLM):
 
         except Exception as e:
             logger.error(f"调用OpenAI客户端发生错误: {str(e)}")
-            raise ServerRequestsError("调用OpenAI客户端向LLM发起请求出错")
+            raise RuntimeError(f"LLM request failed: {e}") from e
 
     async def _invoke_streaming(
             self,

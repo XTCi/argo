@@ -3,7 +3,7 @@ from __future__ import annotations
 import argo.config  # noqa: F401 — ensures api/ on sys.path
 
 from app.domain.repositories.uow import IUnitOfWork
-from argo.adapters.repos import InMemorySessionRepo, InMemoryCheckpointRepo, NoopFileRepo
+from argo.adapters.repos import InMemorySessionRepo, InMemoryCheckpointRepo
 
 
 class InMemoryUoW(IUnitOfWork):
@@ -11,11 +11,9 @@ class InMemoryUoW(IUnitOfWork):
         self,
         session_repo: InMemorySessionRepo,
         checkpoint_repo: InMemoryCheckpointRepo,
-        file_repo: NoopFileRepo,
     ) -> None:
         self.session = session_repo
         self.checkpoint = checkpoint_repo
-        self.file = file_repo
 
     async def commit(self) -> None:
         ...

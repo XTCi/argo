@@ -4,7 +4,6 @@ from typing import Optional
 import argo.config  # noqa: F401 — ensures api/ on sys.path
 
 from app.domain.models.checkpoint import Checkpoint
-from app.domain.models.file import File
 from app.domain.models.memory import Memory
 
 
@@ -24,22 +23,6 @@ class InMemorySessionRepo:
             mem.add_messages(self._initial_messages)
             self._memory_store[agent_name] = mem
         return mem
-
-    # Protocol no-ops
-    async def save(self, session): ...
-    async def get_all(self): return []
-    async def get_by_id(self, session_id): return None
-    async def delete_by_id(self, session_id): ...
-    async def update_title(self, session_id, title): ...
-    async def update_latest_message(self, session_id, message, timestamp): ...
-    async def update_unread_message_count(self, session_id, count): ...
-    async def increment_unread_message_count(self, session_id): ...
-    async def decrement_unread_message_count(self, session_id): ...
-    async def update_status(self, session_id, status): ...
-    async def add_event(self, session_id, event): ...
-    async def add_file(self, session_id, file): ...
-    async def remove_file(self, session_id, file_id): ...
-    async def get_file_by_path(self, session_id, filepath): return None
 
 
 class InMemoryCheckpointRepo:
@@ -64,11 +47,3 @@ class InMemoryCheckpointRepo:
         keys_to_delete = [k for k in self._store if k.startswith(f"{session_id}::")]
         for k in keys_to_delete:
             del self._store[k]
-
-
-class NoopFileRepo:
-    async def save(self, file: File) -> None:
-        ...
-
-    async def get_by_id(self, file_id: str) -> Optional[File]:
-        return None
