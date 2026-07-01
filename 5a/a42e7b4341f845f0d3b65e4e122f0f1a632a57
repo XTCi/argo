@@ -1,0 +1,19 @@
+CLAUDE.md
+  s_eca1fb6bed43c8::t_227aa4413520e7 5-11,15-43,53,57,59,63,67,71,74-76,78-80,84,86,89-172,178,180-181,183,187,189-190,192,194-200,203-210,213,219-220,222-223
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "5aa42e7b4341f845f0d3b65e4e122f0f1a632a57",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "unknown"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
