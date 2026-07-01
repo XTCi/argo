@@ -1,0 +1,23 @@
+api/app/infrastructure/external/llm/openai_llm.py
+  s_eca1fb6bed43c8::t_3f6bf201704f2b 152,157-162
+  s_eca1fb6bed43c8::t_3e513fc3a77d38 120,124-126
+  s_eca1fb6bed43c8::t_510289935e0601 106
+api/tests/domain/services/runtime/test_llm_streaming.py
+  s_eca1fb6bed43c8::t_9bbc0883d21160 147-200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "3bf3a35201bcf14055e6eaff6f50466cc271e5c7",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
