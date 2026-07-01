@@ -1,0 +1,22 @@
+api/tests/domain/services/tools/test_code_search_enhanced.py
+  s_eca1fb6bed43c8::t_bd3ea0c541bf11 1-61
+api/app/domain/services/tools/code_search.py
+  s_eca1fb6bed43c8::t_ff7154907e8e8d 81-151
+  s_eca1fb6bed43c8::t_2b28b7aa499822 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "f6054dee3e64fc641d9d6775dd39fd88f8c5d181",
+  "prompts": {},
+  "sessions": {
+    "s_eca1fb6bed43c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3dc3fec9-d097-4546-9792-d971eca65106",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "xutianci <2378835994@qq.com>"
+    }
+  }
+}
